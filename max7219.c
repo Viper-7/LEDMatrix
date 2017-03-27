@@ -25,7 +25,10 @@
 #define SHUTDOWN      0x0c                        
 #define DISPLAY_TEST  0x0f                         
 
-#define DELAY_TIME 50 
+#define DELAY_TIME    50 
+
+
+unsigned char pixbuf[8];
 
 unsigned char firework[64] = {
 	0b00000000,
@@ -101,8 +104,7 @@ unsigned char firework[64] = {
         0b00000000
 };
 
-
-static void Send16bits (unsigned short output) {
+void Send16bits (unsigned short output) {
    
   signed char i;
 
@@ -120,14 +122,12 @@ static void Send16bits (unsigned short output) {
 
 }
 
-static void MAX7219Send (unsigned char reg_number, unsigned char dataout) {
+void MAX7219Send (unsigned char reg_number, unsigned char dataout) {
   digitalWrite(LOAD, 0);  // set LOAD 1 to start
   Send16bits((reg_number << 8) + dataout);   // send 16 bits ( reg number + dataout )
   digitalWrite(LOAD, 1);  // LOAD 0 to latch
   digitalWrite(LOAD, 0);  // set LOAD 1 to finish
 }
-
-unsigned char pixbuf[8];
 
 void MAX7219Pset(unsigned char y, unsigned char x, unsigned int state) {
   unsigned char row;
@@ -157,7 +157,6 @@ void MAX7219Clear() {
     MAX7219Send(i+1, 0);
   }
 }
-
 
 void MAX7219Test() {
   unsigned char x;
@@ -231,7 +230,6 @@ int main (void) {
       boom();
       delay(rand() % 200);
     }
-//    delay(1000);
     smile();
     delay(1000);
 //    MAX7219Clear();
